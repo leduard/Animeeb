@@ -62,7 +62,7 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
   const openLink = useCallback(async (link: string) => {
     if (Platform.OS === 'android')
       await SendIntentAndroid.openAppWithData(
-        undefined as string,
+        (undefined as unknown) as string,
         link,
         'video/*',
       );
