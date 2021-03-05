@@ -27,12 +27,6 @@ interface RoutesProps {
   changeTheme(): void;
 }
 
-const TempComponent = () => (
-  <Background>
-    <Text>sadasd</Text>
-  </Background>
-);
-
 const MainRoutes: React.FC<RoutesProps> = ({ changeTheme }) => {
   const theme = useContext(ThemeContext);
 
@@ -44,6 +38,7 @@ const MainRoutes: React.FC<RoutesProps> = ({ changeTheme }) => {
         labelStyle: { fontSize: 12 },
         activeTintColor: '#0750b6',
         style: {
+          zIndex: -1,
           backgroundColor: theme.secundaryColor,
           borderTopColor: theme.secundaryColor,
         },
