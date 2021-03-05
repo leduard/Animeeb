@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
 import { NavigationContainer } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Routes from './routes';
 import styles from './styles';
@@ -9,11 +10,32 @@ import styles from './styles';
 const App: React.FC = () => {
   const [theme, setTheme] = useState(styles.themes.darkTheme);
 
-  const changeTheme = () => {
+  useEffect(() => {
+    async function start() {
+      const savedThemeName = await AsyncStorage.getItem('@animeapp:theme');
+
+      if (savedThemeName) {
+        setTheme(
+          savedThemeName === 'dark'
+            ? styles.themes.darkTheme
+            : styles.themes.lightTheme,
+        );
+      }
+    }
+
+    start();
+  }, []);
+
+  const changeTheme = async () => {
     setTheme(
       theme.name === 'light'
         ? styles.themes.darkTheme
         : styles.themes.lightTheme,
+    );
+
+    await AsyncStorage.setItem(
+      '@animeapp:theme',
+      theme.name === 'light' ? 'dark' : 'light',
     );
   };
 
