@@ -87,7 +87,6 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
             if (isAnime) onAnimeClick();
           }}>
           <Cover
-            style={{ backgroundColor: 'red' }}
             source={{ uri: `${global.imagesBaseUrl}/${cover}` }}
             resizeMode="cover"
           />
