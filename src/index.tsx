@@ -3,6 +3,7 @@ import { StatusBar } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SplashScreen from 'react-native-splash-screen';
 
 import Routes from './routes';
 import styles from './styles';
@@ -21,6 +22,8 @@ const App: React.FC = () => {
             : styles.themes.lightTheme,
         );
       }
+
+      SplashScreen.hide();
     }
 
     start();
