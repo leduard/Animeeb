@@ -8,7 +8,7 @@ const LoadingAnime: React.FC = () => {
 
   return (
     <ContentLoader
-      style={{ marginRight: 10 }}
+      style={{ margin: 10, marginRight: 5 }}
       speed={2}
       width={170}
       height={265}
@@ -22,8 +22,8 @@ const LoadingAnime: React.FC = () => {
           ? shade(0.15, theme.primaryColor)
           : shade(0.12, theme.primaryColor)
       }>
-      <Rect x="0" y="10" rx="0" ry="0" width="170" height="220" />
-      <Rect x="10" y="245" rx="0" ry="0" width="150" height="20" />
+      <Rect x="0" y="10" rx="0" ry="0" width="160" height="200" />
+      <Rect x="5" y="220" rx="0" ry="0" width="150" height="25" />
     </ContentLoader>
   );
 };
