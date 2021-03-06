@@ -1,5 +1,11 @@
 import React, { useState, useCallback, useContext } from 'react';
-import { View, ActivityIndicator, Linking, Platform } from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  Linking,
+  Platform,
+  Dimensions,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import SendIntentAndroid from 'react-native-send-intent';
 import { useNavigation } from '@react-navigation/native';
@@ -106,6 +112,9 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
       )}
       <Modal
         style={{ flex: 1, alignItems: 'center' }}
+        deviceHeight={Dimensions.get('screen').height}
+        deviceWidth={Dimensions.get('screen').width}
+        needsOffscreenAlphaCompositing
         useNativeDriver
         isVisible={episodeModalVisible}
         onBackdropPress={() => setEpisodeModalVisible(false)}
