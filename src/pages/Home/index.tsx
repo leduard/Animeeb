@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { View, ScrollView, RefreshControl, FlatList } from 'react-native';
 import { ThemeContext } from 'styled-components/native';
+import { shade } from 'polished';
 
 import Background from '~/components/Background';
 import { PageTitle } from '~/components/Text';
@@ -38,6 +39,12 @@ const Home: React.FC = () => {
       <ScrollView
         refreshControl={
           <RefreshControl
+            colors={[theme.textColor]}
+            progressBackgroundColor={
+              theme.name === 'dark'
+                ? shade(0.5, theme.primaryColor)
+                : theme.primaryColor
+            }
             refreshing={refreshing}
             onRefresh={async () => {
               setRefreshing(true);
