@@ -14,6 +14,8 @@ import {
   AnimeContainer,
   AnimeText,
   DescriptionText,
+  CategoryContainer,
+  CategoryText,
   AnimeDataContainer,
   Cover,
   AnimeTitle,
@@ -104,6 +106,27 @@ const Anime: React.FC = () => {
                 </DescriptionText>
               </ScrollView>
             </AnimeDataContainer>
+            <ScrollView
+              horizontal
+              style={{ alignSelf: 'center' }}
+              contentContainerStyle={{
+                justifyContent: 'space-evenly',
+              }}>
+              {animeDetails.category_genres.split(', ').map((item) => (
+                <CategoryContainer
+                  onPress={() => {
+                    const category = global.categories.find(
+                      (value) => value.displayName === item,
+                    );
+
+                    navigation.navigate('Search', {
+                      category: category?.searchName,
+                    });
+                  }}>
+                  <CategoryText>{item}</CategoryText>
+                </CategoryContainer>
+              ))}
+            </ScrollView>
           </View>
           <FlatList
             contentContainerStyle={{ padding: 10 }}

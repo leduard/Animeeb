@@ -25,6 +25,17 @@ export const DescriptionText = styled(Text)`
   text-align: justify;
 `;
 
+export const CategoryContainer = styled(RectButton).attrs({
+  rippleColor: '#888',
+})`
+  padding: 5px 10px;
+  background: ${(props) => props.theme.secundaryColor};
+  border-radius: 5px;
+  margin: 0 4px;
+`;
+
+export const CategoryText = styled(Text)``;
+
 export const AnimeContainer = styled(RectButton).attrs({
   rippleColor: '#888',
 })`
