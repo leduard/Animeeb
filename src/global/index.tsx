@@ -10,6 +10,10 @@ export default {
       searchName: 'acao',
     },
     {
+      displayName: 'Artes Marciais',
+      searchName: 'artes_marciais',
+    },
+    {
       displayName: 'Comédia',
       searchName: 'comedia',
     },
@@ -74,6 +78,10 @@ export default {
       searchName: 'misterio',
     },
     {
+      displayName: 'Ninja',
+      searchName: 'ninja',
+    },
+    {
       displayName: 'OVA',
       searchName: 'ova',
     },
@@ -120,6 +128,10 @@ export default {
     {
       displayName: 'Suspense',
       searchName: 'suspense',
+    },
+    {
+      displayName: 'Super poderes',
+      searchName: 'super_poderes',
     },
     {
       displayName: 'Terror',

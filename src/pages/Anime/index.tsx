@@ -114,9 +114,18 @@ const Anime: React.FC = () => {
               }}>
               {animeDetails.category_genres.split(', ').map((item) => (
                 <CategoryContainer
+                  enabled={
+                    !!global.categories.find(
+                      (value) =>
+                        value.displayName.toLocaleLowerCase() ===
+                        item.toLocaleLowerCase(),
+                    )
+                  }
                   onPress={() => {
                     const category = global.categories.find(
-                      (value) => value.displayName === item,
+                      (value) =>
+                        value.displayName.toLocaleLowerCase() ===
+                        item.toLocaleLowerCase(),
                     );
 
                     navigation.navigate('Search', {
