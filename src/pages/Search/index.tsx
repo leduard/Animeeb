@@ -42,11 +42,13 @@ const Search: React.FC = () => {
       }
     }
 
-    setLoading(true);
-    setSearchText('');
-    setSearchNotFound(false);
-    setSearchResult([]);
-    setSearchText(`categoria: ${params.category}`);
+    if (params?.category) {
+      setLoading(true);
+      setSearchText('');
+      setSearchNotFound(false);
+      setSearchResult([]);
+      setSearchText(`categoria: ${params?.category}`);
+    }
     getAnimesByCat();
   }, [params]);
 
