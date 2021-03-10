@@ -82,6 +82,20 @@ const getAnimeDetails = async (
   }
 };
 
+const getAnimeByCategory = async (
+  category: string,
+): Promise<Anime[] | undefined> => {
+  try {
+    const { data }: { data: Anime[] } = await api.get('', {
+      params: { categoria: category },
+    });
+
+    return data;
+  } catch (error) {
+    return undefined;
+  }
+};
+
 export {
   getLatest,
   getPopular,
@@ -89,4 +103,5 @@ export {
   getEpisodeStreamingData,
   getAnimeEpisodes,
   getAnimeDetails,
+  getAnimeByCategory,
 };

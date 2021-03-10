@@ -44,3 +44,10 @@ type AnimeRouteParams = {
     animeId: string;
   };
 };
+
+type SearchRouteParams = {
+  Search: {
+    category: string;
+    animes: Anime[];
+  };
+};

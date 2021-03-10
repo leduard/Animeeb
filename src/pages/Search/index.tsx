@@ -4,7 +4,9 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import { ThemeContext } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -19,14 +21,34 @@ import {
   NotFoundContainer,
 } from './styles';
 
-import { searchAnime } from '~/services/api';
+import { searchAnime, getAnimeByCategory } from '~/services/api';
 
 const Search: React.FC = () => {
   const [searchResult, setSearchResult] = useState<Anime[]>([]);
   const [searchText, setSearchText] = useState('');
   const [searchNotFound, setSearchNotFound] = useState(false);
+  const [loading, setLoading] = useState(false);
   const searchInputRef = useRef<TextInput>(null);
   const theme = useContext(ThemeContext);
+  const { params } = useRoute<RouteProp<SearchRouteParams, 'Search'>>();
+
+  useEffect(() => {
+    async function getAnimesByCat() {
+      if (params?.category) {
+        const response = await getAnimeByCategory(params.category);
+
+        setSearchResult(response || []);
+        setLoading(false);
+      }
+    }
+
+    setLoading(true);
+    setSearchText('');
+    setSearchNotFound(false);
+    setSearchResult([]);
+    setSearchText(`categoria: ${params.category}`);
+    getAnimesByCat();
+  }, [params]);
 
   return (
     <Background>
@@ -47,12 +69,15 @@ const Search: React.FC = () => {
           }}
           returnKeyType="send"
           onSubmitEditing={async () => {
+            setLoading(true);
             const response = await searchAnime(searchText);
 
             if (!response) {
               setSearchResult([]);
               setSearchNotFound(true);
             } else setSearchResult(response || []);
+
+            setLoading(false);
           }}
         />
         {!!searchText && (
@@ -68,32 +93,40 @@ const Search: React.FC = () => {
           </SearchInputClear>
         )}
       </SearchContainer>
-      {searchNotFound && (
+      {loading ? (
         <NotFoundContainer>
-          <Text>{`Nada encontrado na busca por "${searchText}"`}</Text>
+          <ActivityIndicator color={theme.textColor} size={75} />
         </NotFoundContainer>
-      )}
-      <FlatList
-        contentContainerStyle={{
-          padding: 10,
-          alignItems: 'center',
-        }}
-        style={{
-          flex: 1,
-          marginTop: 15,
-        }}
-        data={searchResult}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        renderItem={({ item }) => (
-          <AnimeComponent
-            isAnime
-            cover={item.category_image}
-            title={item.category_name}
-            animeId={item?.id}
+      ) : (
+        <>
+          {searchNotFound && (
+            <NotFoundContainer>
+              <Text>{`Nada encontrado na busca por "${searchText}"`}</Text>
+            </NotFoundContainer>
+          )}
+          <FlatList
+            contentContainerStyle={{
+              padding: 10,
+              alignItems: 'center',
+            }}
+            style={{
+              flex: 1,
+              marginTop: 15,
+            }}
+            data={searchResult}
+            keyExtractor={(item) => item.id}
+            numColumns={2}
+            renderItem={({ item }) => (
+              <AnimeComponent
+                isAnime
+                cover={item.category_image}
+                title={item.category_name}
+                animeId={item?.id}
+              />
+            )}
           />
-        )}
-      />
+        </>
+      )}
     </Background>
   );
 };
