@@ -146,4 +146,8 @@ export default {
       searchName: 'yuri',
     },
   ],
+  storageKeys: {
+    theme: '@animeapp:theme',
+    favorites: '@animeapp:favorites',
+  },
 };
