@@ -1,9 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { View, FlatList, ScrollView } from 'react-native';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
+import { View, FlatList, ScrollView, ToastAndroid } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { ThemeContext } from 'styled-components/native';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { shade } from 'polished';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Background from '~/components/Background';
 import AnimeComponent from '~/components/AnimeComponent';
@@ -19,6 +21,8 @@ import {
   AnimeDataContainer,
   Cover,
   AnimeTitle,
+  FavoriteIcon,
+  FavoriteIconContainer,
 } from './styles';
 
 import { getAnimeDetails, getAnimeEpisodes } from '~/services/api';
@@ -61,6 +65,7 @@ const Anime: React.FC = () => {
     {} as AnimeDetails,
   );
   const [episodes, setEpisodes] = useState<AnimeEpisode[]>([]);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
@@ -73,6 +78,18 @@ const Anime: React.FC = () => {
       const animeDetailsResponse = await getAnimeDetails(params.animeId);
       const animeEpisodes = await getAnimeEpisodes(params.animeId);
 
+      const loadedFavAnimes = await AsyncStorage.getItem(
+        global.storageKeys.favorites,
+      );
+
+      if (loadedFavAnimes) {
+        const parsedFavAnimes = JSON.parse(loadedFavAnimes);
+
+        setIsFavorite(
+          parsedFavAnimes.find((anime: Anime) => anime.id === params.animeId),
+        );
+      }
+
       setEpisodes(animeEpisodes || []);
       setAnimeDetails(animeDetailsResponse || ({} as AnimeDetails));
       setLoading(false);
@@ -80,6 +97,36 @@ const Anime: React.FC = () => {
 
     start();
   }, []);
+
+  const handleFavorite = useCallback(async () => {
+    const loadedFavAnimes = await AsyncStorage.getItem(
+      global.storageKeys.favorites,
+    );
+
+    const parsedFavAnimes = JSON.parse(loadedFavAnimes || '[]');
+
+    if (isFavorite) {
+      const newFavorites = parsedFavAnimes.filter(
+        (anime: Anime) => anime.id !== params.animeId,
+      );
+
+      await AsyncStorage.setItem(
+        global.storageKeys.favorites,
+        JSON.stringify(newFavorites),
+      );
+
+      setIsFavorite(false);
+      ToastAndroid.show('Anime removido dos favoritos', ToastAndroid.SHORT);
+    } else {
+      await AsyncStorage.setItem(
+        global.storageKeys.favorites,
+        JSON.stringify([...parsedFavAnimes, animeDetails]),
+      );
+
+      setIsFavorite(true);
+      ToastAndroid.show('Anime adicionado aos favoritos', ToastAndroid.SHORT);
+    }
+  }, [isFavorite, params.animeId, animeDetails]);
 
   return (
     <Background>
@@ -92,6 +139,22 @@ const Anime: React.FC = () => {
         <>
           <View style={{ paddingHorizontal: 10 }}>
             <AnimeDataContainer>
+              <FavoriteIconContainer>
+                <Icon
+                  name="favorite-outline"
+                  size={50}
+                  style={{ position: 'absolute', zIndex: 1 }}
+                  onPress={() => {
+                    handleFavorite();
+                  }}
+                />
+                {isFavorite ? (
+                  <Icon name="favorite" size={50} color="#DA2F3A" />
+                ) : (
+                  <Icon name="favorite" size={50} color={theme.primaryColor} />
+                )}
+              </FavoriteIconContainer>
+
               <Cover
                 source={{ uri: `${global.imagesBaseUrl}/${params.cover}` }}
               />
@@ -114,6 +177,7 @@ const Anime: React.FC = () => {
               }}>
               {animeDetails.category_genres.split(', ').map((item) => (
                 <CategoryContainer
+                  key={item}
                   enabled={
                     !!global.categories.find(
                       (value) =>
