@@ -8,12 +8,16 @@ import SplashScreen from 'react-native-splash-screen';
 import Routes from './routes';
 import styles from './styles';
 
+import global from '~/global';
+
 const App: React.FC = () => {
   const [theme, setTheme] = useState(styles.themes.darkTheme);
 
   useEffect(() => {
     async function start() {
-      const savedThemeName = await AsyncStorage.getItem('@animeapp:theme');
+      const savedThemeName = await AsyncStorage.getItem(
+        global.storageKeys.theme,
+      );
 
       if (savedThemeName) {
         setTheme(
@@ -37,7 +41,7 @@ const App: React.FC = () => {
     );
 
     await AsyncStorage.setItem(
-      '@animeapp:theme',
+      global.storageKeys.theme,
       theme.name === 'light' ? 'dark' : 'light',
     );
   };

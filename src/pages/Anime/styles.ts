@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { PageTitle, Text } from '~/components/Text';
 
@@ -50,4 +51,14 @@ export const AnimeContainer = styled(RectButton).attrs({
 export const AnimeText = styled(PageTitle)`
   text-align: center;
   font-size: 16px;
+`;
+
+export const FavoriteIcon = styled(Icon).attrs({
+  name: 'favorite',
+  size: 50,
+})``;
+
+export const FavoriteIconContainer = styled.View`
+  position: absolute;
+  z-index: 1;
 `;
