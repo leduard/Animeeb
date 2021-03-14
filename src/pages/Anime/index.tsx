@@ -193,6 +193,7 @@ const Anime: React.FC = () => {
               style={{ alignSelf: 'center' }}
               contentContainerStyle={{
                 justifyContent: 'space-evenly',
+                paddingVertical: 5,
               }}>
               {animeDetails.category_genres.split(', ').map((item) => (
                 <CategoryContainer
