@@ -139,19 +139,38 @@ const Anime: React.FC = () => {
         <>
           <View style={{ paddingHorizontal: 10 }}>
             <AnimeDataContainer>
-              <FavoriteIconContainer>
+              <FavoriteIconContainer
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
                 <Icon
                   name="favorite-outline"
-                  size={50}
-                  style={{ position: 'absolute', zIndex: 1 }}
-                  onPress={() => {
-                    handleFavorite();
+                  size={45}
+                  style={{
+                    position: 'absolute',
+                    marginLeft: -6,
+                    zIndex: 0,
                   }}
                 />
                 {isFavorite ? (
-                  <Icon name="favorite" size={50} color="#DA2F3A" />
+                  <Icon
+                    name="favorite"
+                    size={40}
+                    color="#DA2F3A"
+                    onPress={() => {
+                      handleFavorite();
+                    }}
+                  />
                 ) : (
-                  <Icon name="favorite" size={50} color={theme.primaryColor} />
+                  <Icon
+                    name="favorite"
+                    size={40}
+                    color="#efeff1"
+                    onPress={() => {
+                      handleFavorite();
+                    }}
+                  />
                 )}
               </FavoriteIconContainer>
 
