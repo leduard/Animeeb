@@ -149,5 +149,6 @@ export default {
   storageKeys: {
     theme: '@animeapp:theme',
     favorites: '@animeapp:favorites',
+    history: '@animeapp:history',
   },
 };
