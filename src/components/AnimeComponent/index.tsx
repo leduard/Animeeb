@@ -128,7 +128,11 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
           {watchedState && (
             <Icon
               name="eye"
-              style={{ position: 'absolute', left: 25 }}
+              style={{
+                position: 'absolute',
+                left: -5,
+                top: -6,
+              }}
               size={20}
               color={theme.textColor}
             />
