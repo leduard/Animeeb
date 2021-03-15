@@ -67,10 +67,10 @@ const Anime: React.FC = () => {
   const [episodes, setEpisodes] = useState<AnimeEpisode[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [watchedAnimes, setWatchedAnimes] = useState<string[]>([]);
 
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<AnimeRouteParams, 'Anime'>>();
-  const theme = useContext(ThemeContext);
 
   useEffect(() => {
     async function start() {
@@ -78,9 +78,13 @@ const Anime: React.FC = () => {
       const animeDetailsResponse = await getAnimeDetails(params.animeId);
       const animeEpisodes = await getAnimeEpisodes(params.animeId);
 
-      const loadedFavAnimes = await AsyncStorage.getItem(
+      const [
+        [, loadedFavAnimes],
+        [, loadedHistory],
+      ] = await AsyncStorage.multiGet([
         global.storageKeys.favorites,
-      );
+        global.storageKeys.history,
+      ]);
 
       if (loadedFavAnimes) {
         const parsedFavAnimes = JSON.parse(loadedFavAnimes);
@@ -88,6 +92,12 @@ const Anime: React.FC = () => {
         setIsFavorite(
           parsedFavAnimes.find((anime: Anime) => anime.id === params.animeId),
         );
+      }
+
+      if (loadedHistory) {
+        const parsedLoadedHistory = JSON.parse(loadedHistory);
+
+        setWatchedAnimes(parsedLoadedHistory);
       }
 
       setEpisodes(animeEpisodes || []);
@@ -230,6 +240,7 @@ const Anime: React.FC = () => {
                 title={item.title}
                 videoId={item.video_id}
                 isNormalEpisode
+                watched={watchedAnimes.indexOf(item.video_id) !== -1}
               />
             )}
           />

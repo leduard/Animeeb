@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import SendIntentAndroid from 'react-native-send-intent';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from 'styled-components/native';
 
@@ -33,6 +35,7 @@ interface AnimeComponentProps {
   isNewEpisode?: boolean;
   isNormalEpisode?: boolean;
   isAnime?: boolean;
+  watched?: boolean;
 }
 
 const AnimeComponent: React.FC<AnimeComponentProps> = ({
@@ -43,10 +46,12 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
   isNewEpisode = false,
   isNormalEpisode = false,
   isAnime = false,
+  watched = false,
   ...rest
 }) => {
   const [episodeModalVisible, setEpisodeModalVisible] = useState(false);
   const [episodeModalLoading, setEpisodeModalLoading] = useState(false);
+  const [watchedState, setWatchedState] = useState(watched);
   const [episodeModalData, setEpisodeModalData] = useState<AnimeStreamingData>(
     {} as AnimeStreamingData,
   );
@@ -77,6 +82,20 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
 
       if (supported) await Linking.openURL(link);
     }
+
+    const loadedHistory = await AsyncStorage.getItem(
+      global.storageKeys.history,
+    );
+
+    const parsedLoadedHistory = JSON.parse(loadedHistory || '[]');
+
+    if (parsedLoadedHistory.indexOf(videoId) === -1)
+      await AsyncStorage.setItem(
+        global.storageKeys.history,
+        JSON.stringify([...parsedLoadedHistory, videoId]),
+      );
+
+    setWatchedState(true);
   }, []);
 
   const onAnimeClick = useCallback(async () => {
@@ -107,6 +126,18 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
             if (isNewEpisode || isNormalEpisode) onEpisodeClick();
             if (isAnime) onAnimeClick();
           }}>
+          {watchedState && (
+            <Icon
+              name="eye"
+              style={{
+                position: 'absolute',
+                left: -5,
+                top: -6,
+              }}
+              size={20}
+              color={theme.textColor}
+            />
+          )}
           <NormalAnimeEpisodeText>{title}</NormalAnimeEpisodeText>
         </NormalAnimeEpisodeContainer>
       )}

@@ -44,6 +44,7 @@ export const NormalAnimeEpisodeContainer = styled(RectButton).attrs({
   rippleColor: '#888',
 })`
   padding: 10px 15px;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin: 2px 0;
