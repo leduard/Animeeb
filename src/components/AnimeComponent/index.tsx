@@ -89,10 +89,11 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
 
     const parsedLoadedHistory = JSON.parse(loadedHistory || '[]');
 
-    await AsyncStorage.setItem(
-      global.storageKeys.history,
-      JSON.stringify([...parsedLoadedHistory, videoId]),
-    );
+    if (parsedLoadedHistory.indexOf(videoId) === -1)
+      await AsyncStorage.setItem(
+        global.storageKeys.history,
+        JSON.stringify([...parsedLoadedHistory, videoId]),
+      );
 
     setWatchedState(true);
   }, []);
