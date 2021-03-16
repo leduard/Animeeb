@@ -1,0 +1,57 @@
+name: build-android
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  install-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          yarn
+  build-android:
+    needs: install-and-test
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          yarn
+      - name: Build Android Release
+        run: |
+          cd android && chmod +x gradlew && ./gradlew assembleRelease
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: animeapp.apk
+          path: android/app/build/outputs/apk/release/app-release.apk
+      - name: Rename apk
+        run: |
+          cd android/app/build/outputs/apk/release && mv app-release.apk animeapp.apk
+      - name: Delete old release
+        uses: dev-drprasad/delete-tag-and-release@v0.1.2
+        with:
+          delete_release: true 
+          tag_name: build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Changelog
+        uses: scottbrenner/generate-changelog-action@1.0.3
+        id: changelog
+      - name: Create draft release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          name: Build release
+          body: |
+            ${{ steps.changelog.outputs.changelog }}
+          tag_name: build
+          prerelease: true
+          draft: true
+          files: |
+            android/app/build/outputs/apk/release/animeapp.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
