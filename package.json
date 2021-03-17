@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "codepush:release": "appcenter codepush release-react -a leduard/AnimeApp-Android -d Production"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.14.1",
