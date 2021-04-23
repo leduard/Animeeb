@@ -98,7 +98,7 @@ const Home: React.FC = () => {
             }
             horizontal
             renderItem={({ item }) => {
-              if (['1', '2'].indexOf(item?.category_id) === -1) {
+              if (['1', '2', '33440'].indexOf(item?.category_id) === -1) {
                 return loading ? (
                   <LoadingAnime />
                 ) : (
