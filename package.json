@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "codepush:release": "appcenter codepush release-react -a leduard/AnimeApp-Android -d Production"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.14.1",
@@ -21,6 +22,7 @@
     "react": "16.13.1",
     "react-content-loader": "^6.0.1",
     "react-native": "0.63.4",
+    "react-native-code-push": "^7.0.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-modal": "^11.7.0",
     "react-native-reanimated": "^1.13.2",
