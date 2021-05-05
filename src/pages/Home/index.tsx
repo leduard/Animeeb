@@ -106,6 +106,7 @@ const Home: React.FC = () => {
                     videoId={item?.video_id}
                     title={item?.title}
                     cover={item?.category_image}
+                    animeId={item?.category_id}
                     isNewEpisode
                   />
                 );

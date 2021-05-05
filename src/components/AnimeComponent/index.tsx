@@ -5,6 +5,7 @@ import {
   Linking,
   Platform,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import SendIntentAndroid from 'react-native-send-intent';
@@ -154,7 +155,7 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
           style={{
             flex: 1,
             padding: 20,
-            maxHeight: 250,
+            maxHeight: '50%',
             width: 300,
             justifyContent: 'center',
             alignItems: 'center',
@@ -165,10 +166,39 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
             <ActivityIndicator color={theme.textColor} size={75} />
           ) : (
             <>
-              <Title
-                style={{ fontSize: 20, marginBottom: 20, textAlign: 'center' }}>
-                {title}
-              </Title>
+              {!isNormalEpisode ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    setEpisodeModalVisible(false);
+                    onAnimeClick();
+                  }}
+                  style={{ alignSelf: 'center' }}>
+                  <Title
+                    style={{
+                      fontSize: 20,
+                      marginBottom: 20,
+                      textAlign: 'center',
+                      lineHeight: 26,
+                    }}>
+                    {title}
+                    {'   '}
+                    <Icon
+                      name="external-link"
+                      color={theme.textColor}
+                      size={20}
+                    />
+                  </Title>
+                </TouchableOpacity>
+              ) : (
+                <Title
+                  style={{
+                    fontSize: 20,
+                    marginBottom: 20,
+                    textAlign: 'center',
+                  }}>
+                  {title}
+                </Title>
+              )}
               {!!episodeModalData.location && (
                 <VideoLinkButton
                   onPress={() => openLink(episodeModalData.location)}>
@@ -187,6 +217,10 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
                   <Title style={{ fontSize: 14 }}>Qualidade 3 (HD 2)</Title>
                 </VideoLinkButton>
               )}
+              {/* <TouchableOpacity
+                style={{ position: 'absolute', bottom: 15, right: 15 }}>
+                <Icon name="external-link" color={theme.textColor} size={30} />
+              </TouchableOpacity> */}
             </>
           )}
         </View>

@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
-import { View, FlatList, ScrollView, ToastAndroid } from 'react-native';
+import {
+  View,
+  FlatList,
+  ScrollView,
+  ToastAndroid,
+  ActivityIndicator,
+} from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { ThemeContext } from 'styled-components/native';
 import ContentLoader, { Rect } from 'react-content-loader/native';
@@ -68,6 +74,8 @@ const Anime: React.FC = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(true);
   const [watchedAnimes, setWatchedAnimes] = useState<string[]>([]);
+
+  const theme = useContext(ThemeContext);
 
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<AnimeRouteParams, 'Anime'>>();
@@ -141,7 +149,15 @@ const Anime: React.FC = () => {
   return (
     <Background>
       <View style={{ paddingHorizontal: 20 }}>
-        <AnimeTitle>{params.title}</AnimeTitle>
+        {animeDetails.category_name ? (
+          <AnimeTitle>{animeDetails.category_name}</AnimeTitle>
+        ) : (
+          <ActivityIndicator
+            style={{ marginTop: 20 }}
+            color={theme.textColor}
+            size={20}
+          />
+        )}
       </View>
       {loading ? (
         <LoadingAnime />
