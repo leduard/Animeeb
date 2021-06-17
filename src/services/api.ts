@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://appanimeplus.tk/api-animesbr-10.php',
+  baseURL: 'https://appanimeplus.tk/meuanimetv-40.php',
 });
 
 const getLatest = async (): Promise<LatestAnimeEpisode[] | undefined> => {
