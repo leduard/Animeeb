@@ -1,8 +1,21 @@
 import axios from 'axios';
 
+import getRandomUserAgent from '~/utils/userAgent';
+
 const api = axios.create({
   baseURL: 'https://appanimeplus.tk/meuanimetv-40.php',
+  headers: {
+    'X-Requested-With': 'br.com.meuanimetv',
+    'user-agent': getRandomUserAgent(),
+  },
 });
+
+// this is the authentication used to get anime videos
+// i still not understanding this auth method but its basically
+// STREAMING_DATA_TOKEN / STREAMING_DATA_R = 324897 ~ 324898
+// i figured it out and it actually works!
+const STREAMING_DATA_TOKEN = '32489800000000';
+const STREAMING_DATA_R = '10000';
 
 const getLatest = async (): Promise<LatestAnimeEpisode[] | undefined> => {
   try {
@@ -45,7 +58,15 @@ const getEpisodeStreamingData = async (
 ): Promise<AnimeStreamingData | undefined> => {
   try {
     const { data }: { data: AnimeStreamingData[] } = await api.get('', {
-      params: { episodios: video_id },
+      params: {
+        episodios: video_id,
+        token: STREAMING_DATA_TOKEN,
+        r: STREAMING_DATA_R,
+      },
+      headers: {
+        'X-Auth':
+          'VnM4ejB1dElLajZDZDhiSU02aGF0RmdDQWxXNDl3SEQzWjE2Ulg1K3ZOWjZkbjJXZjBqT2xnT0FVdnVwd2VjTEdkaS9KM0VlaHM4L1psc1J4R25SWHVpTGdjMVBvYUViTExhQXZpMzZGTytiVjh0SnQzUDVxL3ZVTDVZdkYwSDE1bFdFV1V4WGRwbUFFM0NJNjJOWEkvSndhbFVjZXNZYVRROGFKK2lkT2lEaU9nMElQT0hWTFlxNzlHajNPSVNhSjdnUDZTeldtbHVRaXlxMk5qSkFKV09NbDBIQkZhVTJYMitaaGtrMTd1OVJlSE5saVlGdUJOMk5TSGlBbzByYjFGeDN5N0Q2eHhjZFdzWS90b1JacFJtRGJ5QVdXLzBlTmhKK3UvVElGa3Q4T1Q5ODFZQjBzN0gxQVArZnY5NGo=',
+      },
     });
 
     return data[0];
