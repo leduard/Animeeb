@@ -10,13 +10,6 @@ const api = axios.create({
   },
 });
 
-// this is the authentication used to get anime videos
-// i still not understanding this auth method but its basically
-// STREAMING_DATA_TOKEN / STREAMING_DATA_R = 324897 ~ 324898
-// i figured it out and it actually works!
-const STREAMING_DATA_TOKEN = '32489800000000';
-const STREAMING_DATA_R = '10000';
-
 const getLatest = async (): Promise<LatestAnimeEpisode[] | undefined> => {
   try {
     const { data }: { data: LatestAnimeEpisode[] } = await api.get('', {
@@ -57,11 +50,15 @@ const getEpisodeStreamingData = async (
   video_id: string,
 ): Promise<AnimeStreamingData | undefined> => {
   try {
+    const streamingDataR = Math.floor(Math.random() * 90000) + 10000;
+    const timeToMatch = (Date.now() / 1000) * 2;
+    const streamingDataToken = (timeToMatch * streamingDataR).toFixed();
+
     const { data }: { data: AnimeStreamingData[] } = await api.get('', {
       params: {
         episodios: video_id,
-        token: STREAMING_DATA_TOKEN,
-        r: STREAMING_DATA_R,
+        token: streamingDataToken,
+        r: streamingDataR,
       },
       headers: {
         'X-Auth':
