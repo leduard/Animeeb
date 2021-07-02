@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import getRandomUserAgent from '~/utils/userAgent';
+import { getRandomUserAgent } from '~/utils/userAgent';
 
 const api = axios.create({
   baseURL: 'https://appanimeplus.tk/meuanimetv-40.php',

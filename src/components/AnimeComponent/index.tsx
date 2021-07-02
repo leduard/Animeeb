@@ -27,6 +27,7 @@ import {
 import global from '~/global';
 
 import { getEpisodeStreamingData } from '~/services/api';
+import { userAgent } from '~/utils/userAgent';
 
 interface AnimeComponentProps {
   title: string;
@@ -113,7 +114,12 @@ const AnimeComponent: React.FC<AnimeComponentProps> = ({
             if (isAnime) onAnimeClick();
           }}>
           <Cover
-            source={{ uri: `${global.imagesBaseUrl}/${cover}` }}
+            source={{
+              uri: `${global.imagesBaseUrl}/${cover}`,
+              headers: {
+                'user-agent': userAgent,
+              },
+            }}
             resizeMode="cover"
           />
           <TitleContainer>

@@ -32,6 +32,7 @@ import {
 } from './styles';
 
 import { getAnimeDetails, getAnimeEpisodes } from '~/services/api';
+import { userAgent } from '~/utils/userAgent';
 
 const LoadingAnime: React.FC = () => {
   const theme = useContext(ThemeContext);
@@ -201,7 +202,12 @@ const Anime: React.FC = () => {
               </FavoriteIconContainer>
 
               <Cover
-                source={{ uri: `${global.imagesBaseUrl}/${params.cover}` }}
+                source={{
+                  uri: `${global.imagesBaseUrl}/${params.cover}`,
+                  headers: {
+                    'user-agent': userAgent,
+                  },
+                }}
               />
               <ScrollView
                 contentContainerStyle={{

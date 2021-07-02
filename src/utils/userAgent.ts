@@ -1,4 +1,4 @@
-export default function getRandomUserAgent(): string {
+export function getRandomUserAgent(): string {
   const userAgents = [
     'Mozilla/5.0 (Linux; Android 10; Android SDK built for x86 Build/QSR1.200715.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.185 Mobile Safari/537.36',
     'Mozilla/5.0 (Linux; U; Android 4.4.2; en-us; SCH-I535 Build/KOT49H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30',
@@ -10,3 +10,5 @@ export default function getRandomUserAgent(): string {
 
   return userAgents[Math.floor(Math.random() * userAgents.length)];
 }
+
+export const userAgent = getRandomUserAgent();
