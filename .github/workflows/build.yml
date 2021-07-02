@@ -39,7 +39,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Changelog
-        uses: scottbrenner/generate-changelog-action@1.0.3
+        uses: ScottBrenner/generate-changelog-action@v1.3.3
         id: changelog
       - name: Create draft release
         uses: softprops/action-gh-release@v1
