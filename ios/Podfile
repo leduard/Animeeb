@@ -12,6 +12,8 @@ target 'animeapp' do
     :hermes_enabled => false
   )
 
+  pod 'RNSpringScrollView', :path => '../node_modules/react-native-spring-scrollview'
+
   target 'animeappTests' do
     inherit! :complete
     # Pods for testing
