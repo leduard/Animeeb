@@ -1,3 +1,9 @@
+declare module '@env' {
+  export const DEFAULT_API_LINK: string;
+  export const DEFAULT_API_HEADER: string;
+  export const VIDEOS_API_LINK: string;
+}
+
 declare module '*.svg' {
   import React from 'react';
   import { SvgProps } from 'react-native-svg';

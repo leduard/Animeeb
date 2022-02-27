@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { DEFAULT_API_LINK, DEFAULT_API_HEADER, VIDEOS_API_LINK } from '@env'; // eslint-disable-line
 
-export const defaultApiLink = 'https://atv2.net/meuanimetv-74.php';
-export const videosApiLink =
-  'https://animeland.appanimeplus.tk/videoweb/api.php';
+export const defaultApiLink = DEFAULT_API_LINK;
+export const videosApiLink = VIDEOS_API_LINK;
 
 export function getRandomUserAgent(): string {
   const userAgents = [
@@ -20,7 +20,7 @@ export function getRandomUserAgent(): string {
 const defaultApi = axios.create({
   baseURL: defaultApiLink,
   headers: {
-    'X-Requested-With': 'br.com.meuanimetv',
+    'X-Requested-With': DEFAULT_API_HEADER,
     'user-agent': getRandomUserAgent(),
   },
 });
