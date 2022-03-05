@@ -134,7 +134,7 @@ const Settings: React.FC<SettingsProps> = ({ changeTheme }) => {
               color: theme.textPrimary,
             }}
             font="medium">
-            Limpar dados da aplicação
+            Apagar todos os dados
           </Text>
         </TouchableOpacity>
       </View>

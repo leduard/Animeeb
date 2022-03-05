@@ -167,7 +167,6 @@ const Details: React.FC = () => {
               flex: 1,
               fontSize: 14,
               textAlign: 'justify',
-              letterSpacing: 0.5,
               color: `${theme.textPrimary}65`,
               lineHeight: 18,
             }}

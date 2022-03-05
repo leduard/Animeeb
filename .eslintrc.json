@@ -48,7 +48,8 @@
     "no-nested-ternary": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
-    "max-classes-per-file": "off"
+    "max-classes-per-file": "off",
+    "react/require-default-props": [0]
   },
   "settings": {
     "import/resolver": {

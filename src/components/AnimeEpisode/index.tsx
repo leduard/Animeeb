@@ -12,7 +12,7 @@ interface AnimeEpisodeProps {
   episodeId: string;
   episodeUrls: string[];
   isOpen?: boolean;
-  watched: boolean;
+  watched?: boolean;
 }
 
 const AnimeEpisode: React.FC<AnimeEpisodeProps> = ({
