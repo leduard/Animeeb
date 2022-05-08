@@ -1,6 +1,13 @@
 import React, { useRef, useCallback, LegacyRef } from 'react';
-import { Platform, TouchableOpacity, Linking, StyleSheet } from 'react-native';
+import {
+  Platform,
+  TouchableOpacity,
+  Linking,
+  StyleSheet,
+  ToastAndroid,
+} from 'react-native';
 import Menu from 'react-native-material-menu';
+import Clipboard from '@react-native-clipboard/clipboard';
 import SendIntentAndroid from 'react-native-send-intent';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { useTheme } from 'styled-components/native';
@@ -61,6 +68,12 @@ const EpisodeQualityButton: React.FC<EpisodeQualityButtonProps> = ({
       onPress={e => {
         e.stopPropagation();
         if (episodeUrl) showMenu();
+      }}
+      onLongPress={() => {
+        if (episodeUrl) {
+          Clipboard.setString(episodeUrl);
+          ToastAndroid.show('Link copiado com sucesso!', ToastAndroid.LONG);
+        }
       }}
       style={{
         width: 65,
