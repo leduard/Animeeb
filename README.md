@@ -7,7 +7,7 @@
 
 ---
 
-# AnimeApp
+# animeeb
 
 This is an app made for fun to watch animes on mobile. It uses an open API that was documented [here](https://github.com/LaksCastro/anime-tv-unofficial-api)
 
@@ -29,7 +29,7 @@ This is an app made for fun to watch animes on mobile. It uses an open API that 
 
 ### Downloading the app
 
-You can download the latest version of this app by clicking [here](https://github.com/leduard/AnimeApp/releases/latest/download/animeapp.apk) or you can check all releases on this [page](https://github.com/leduard/AnimeApp/releases)
+You can download the latest version of this app by clicking [here](https://github.com/leduard/animeeb/releases/latest/download/animeeb.apk) or you can check all releases on this [page](https://github.com/leduard/animeeb/releases)
 
 # Running this project
 

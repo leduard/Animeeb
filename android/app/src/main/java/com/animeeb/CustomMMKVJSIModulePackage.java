@@ -1,4 +1,4 @@
-package com.animeapp;
+package com.animeeb;
 
 import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.react.bridge.JSIModuleSpec;

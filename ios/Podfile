@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'animeapp' do
+target 'animeeb' do
   config = use_native_modules!
 
   use_react_native!(
@@ -14,7 +14,7 @@ target 'animeapp' do
 
   pod 'RNSpringScrollView', :path => '../node_modules/react-native-spring-scrollview'
 
-  target 'animeappTests' do
+  target 'animeebTests' do
     inherit! :complete
     # Pods for testing
   end
