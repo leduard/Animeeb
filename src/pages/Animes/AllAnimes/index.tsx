@@ -112,7 +112,7 @@ const Popular: React.FC = () => {
               title={item.category_name}
               cover={item.category_image}
               animeId={item.id}
-              isFavorite={favorites?.some(fav => fav.id === item.id)}
+              isFavorite={favorites?.some(fav => fav.id === item.id) || false}
               handleFavorite={() => handleFavorite(item)}
             />
           )}
