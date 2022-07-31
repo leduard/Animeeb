@@ -5,6 +5,7 @@ import android.content.Context;
 import com.animeeb.CustomMMKVJSIModulePackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.bolan9999.SpringScrollViewPackage;
 import com.burnweb.rnsendintent.RNSendIntentPackage;
 import com.facebook.react.ReactInstanceManager;

@@ -14,6 +14,8 @@ target 'animeeb' do
 
   pod 'RNSpringScrollView', :path => '../node_modules/react-native-spring-scrollview'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'animeebTests' do
     inherit! :complete
     # Pods for testing
