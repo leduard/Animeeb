@@ -1,5 +1,5 @@
 <div align="center">
-  <img src=".github/assets/icon.png" width=200 />
+  <img src=".github/assets/icon play store.png" width=150 />
 </div>
 <p align="center">
     Application developed with TypeScript using the React Native
