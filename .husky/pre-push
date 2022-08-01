@@ -1,4 +1,26 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn version
+exec < /dev/tty
+
+while true; do
+  read -p "[pre-push hook] What is the update type? (major|minor|none|patch) [patch]: " update_type
+  if [ "$update_type" = "" ]; then
+    update_type='patch'
+  fi
+
+  if [ "$update_type" = "major" ]; then
+    yarn version --major
+    break
+  elif [ "$update_type" = "minor" ]; then
+    yarn version --minor
+    break
+  elif [ "$update_type" = "none" ]; then
+    break
+  elif [ "$update_type" = "patch" ]; then
+    yarn version --patch
+    break
+  else
+    echo "Invalid update type"
+  fi
+done
