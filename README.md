@@ -9,7 +9,6 @@
 
 # animeeb
 
-
 ### Features
 
 - [x] Save animes on your own favorite list
