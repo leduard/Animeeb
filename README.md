@@ -1,5 +1,5 @@
 <div align="center">
-  <img src=".github/assets/logo.png" width=200 />
+  <img src=".github/assets/icon.png" width=200 />
 </div>
 <p align="center">
     Application developed with TypeScript using the React Native
@@ -9,12 +9,11 @@
 
 # animeeb
 
-This is an app made for fun to watch animes on mobile. It uses an open API that was documented [here](https://github.com/LaksCastro/anime-tv-unofficial-api)
 
 ### Features
 
 - [x] Save animes on your own favorite list
-- [x] View history
+- [x] Watch history
 - [x] Dark/light themes
 - [x] Watch videos on external players
 - [ ] Download videos
@@ -22,9 +21,11 @@ This is an app made for fun to watch animes on mobile. It uses an open API that 
 ### Screenshots
 
 <div align="center">
-  <img src="./.github/assets/app_screenshot.jpg" height=500 />
-  <img src="./.github/assets/app_screenshot2.jpg" height=500 />
-  <img src="./.github/assets/app_screenshot3.jpg" height=500 />
+  <img src="./.github/assets/screenshots/01.jpg" height=500 />
+  <img src="./.github/assets/screenshots/02.jpg" height=500 />
+  <img src="./.github/assets/screenshots/03.jpg" height=500 />
+  <img src="./.github/assets/screenshots/04.jpg" height=500 />
+  <img src="./.github/assets/screenshots/05.jpg" height=500 />
 </div>
 
 ### Downloading the app
