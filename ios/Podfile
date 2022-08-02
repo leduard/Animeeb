@@ -6,7 +6,7 @@ install! 'cocoapods', :deterministic_uuids => false
 
 production = ENV["PRODUCTION"] == "1"
 
-target 'RnDiffApp' do
+target 'Animeeb' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -23,7 +23,7 @@ target 'RnDiffApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'RnDiffAppTests' do
+  target 'AnimeebTests' do
     inherit! :complete
     # Pods for testing
   end
