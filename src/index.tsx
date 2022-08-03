@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components/native';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -46,8 +46,17 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <StatusBar backgroundColor={currentTheme.primary} />
-      <NavigationContainer>
+      <StatusBar
+        backgroundColor={currentTheme.primary}
+        barStyle={
+          currentTheme.name === 'dark' ? 'light-content' : 'dark-content'
+        }
+      />
+      <NavigationContainer
+        theme={{
+          colors: { ...DarkTheme.colors, background: currentTheme.primary },
+          dark: DarkTheme.dark,
+        }}>
         <Routes changeTheme={changeTheme} />
       </NavigationContainer>
     </ThemeProvider>

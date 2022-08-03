@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, LegacyRef } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Platform,
   TouchableOpacity,
@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import Menu from 'react-native-material-menu';
+import { Menu } from 'react-native-material-menu';
 import Clipboard from '@react-native-clipboard/clipboard';
 import SendIntentAndroid from 'react-native-send-intent';
 import { useRoute, RouteProp } from '@react-navigation/native';
@@ -32,13 +32,13 @@ const EpisodeQualityButton: React.FC<EpisodeQualityButtonProps> = ({
   episodeId,
   episodeUrl,
 }) => {
-  const menuRef = useRef<Menu>();
+  const [visible, setVisible] = useState(false);
 
   const theme = useTheme();
   const { params } = useRoute<RouteProp<AnimeDetailsRouteParams, 'Anime'>>();
 
-  const hideMenu = () => menuRef.current?.hide();
-  const showMenu = () => menuRef.current?.show();
+  const hideMenu = () => setVisible(false);
+  const showMenu = () => setVisible(true);
 
   const openLink = useCallback(async (link: string) => {
     if (Platform.OS === 'android')
@@ -104,8 +104,9 @@ const EpisodeQualityButton: React.FC<EpisodeQualityButtonProps> = ({
         backgroundColor: theme.primary4,
       }}
       animationDuration={200}
-      ref={menuRef as LegacyRef<Menu>}
-      button={<MenuButton />}>
+      visible={visible}
+      onRequestClose={hideMenu}
+      anchor={<MenuButton />}>
       <TouchableOpacity
         onPress={() => {
           if (episodeUrl) openLink(episodeUrl);

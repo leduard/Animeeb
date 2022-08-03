@@ -6,7 +6,7 @@ enum ANIME_ROUTES_NAMES {
 }
 
 enum ANIME_TAB_ROUTE_NAMES {
-  home = 'Home',
+  home = 'HomeTab',
   allAnimes = 'AllAnimes',
   favorites = 'Favorites',
 }

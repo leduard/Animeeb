@@ -80,6 +80,7 @@ import groovy.json.JsonSlurper
 
 project.ext.react = [
     enableHermes: true,  // clean and rebuild if changing
+    hermesCommand: '../../node_modules/react-native/sdks/hermesc/%OS-BIN%/hermesc'
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -299,6 +300,7 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation project(':react-native-splash-screen')
+    implementation project(':react-native-pager-view')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
