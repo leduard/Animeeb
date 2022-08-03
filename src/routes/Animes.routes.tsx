@@ -57,7 +57,12 @@ const AnimesRoutes: React.FC<AnimesRoutesProps> = ({ changeTheme }) => {
           />
         ),
         cardStyle: {
-          backgroundColor: theme.primary,
+          backgroundColor: 'transparent',
+        },
+      }}
+      defaultScreenOptions={{
+        cardStyle: {
+          backgroundColor: theme.warn,
         },
       }}>
       <StackNavigator.Screen name={ANIME_ROUTES_NAMES.home}>
@@ -65,20 +70,20 @@ const AnimesRoutes: React.FC<AnimesRoutesProps> = ({ changeTheme }) => {
           <TabNavigator.Navigator
             tabBarPosition="bottom"
             sceneContainerStyle={{ backgroundColor: theme.primary }}
-            swipeVelocityImpact={0.25}
-            initialRouteName={ANIME_ROUTES_NAMES.home}
-            tabBarOptions={{
-              style: {
+            initialRouteName={ANIME_TAB_ROUTE_NAMES.home}
+            screenOptions={{
+              tabBarStyle: {
                 backgroundColor: theme.primary,
                 padding: 5,
                 elevation: 0,
               },
-              indicatorStyle: {
+              tabBarContentContainerStyle: { backgroundColor: theme.primary },
+              tabBarIndicatorStyle: {
                 display: 'none',
                 backgroundColor: 'transparent',
               },
-              pressOpacity: 0,
-              pressColor: theme.primary,
+              tabBarPressOpacity: 0,
+              tabBarPressColor: theme.primary,
             }}
             style={{
               backgroundColor: theme.primary,

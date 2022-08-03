@@ -91,6 +91,7 @@ const Popular: React.FC = () => {
             borderBottomColor: theme.primary5,
             borderBottomWidth: 1,
             marginBottom: 5,
+            color: theme.textPrimary,
           }}
           autoCorrect={false}
           textContentType="name"
