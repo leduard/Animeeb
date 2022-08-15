@@ -29,7 +29,7 @@
 
 ### Downloading the app
 
-For you can download the latest version of this app from Google's Play Store by clicking the bellow image
+For now you can download the latest version of this app from Play Store by clicking the bellow image
 
 <div align="center">
   <a
