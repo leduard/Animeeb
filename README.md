@@ -29,7 +29,17 @@
 
 ### Downloading the app
 
-You can download the latest version of this app by clicking [here](https://github.com/leduard/animeeb/releases/latest/download/animeeb.apk) or you can check all releases on this [page](https://github.com/leduard/animeeb/releases)
+For you can download the latest version of this app from Google's Play Store by clicking the bellow image
+
+<div align="center">
+  <a
+    href="https://play.google.com/store/apps/details?id=com.animeeb&utm_source=utm_github_repo"
+    ><img
+      height="75"
+      alt="Get it on Google Play"
+      src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+  /></a>
+</div>
 
 # Running this project
 
