@@ -12,7 +12,7 @@ export function getHeightBasedOnText(
   // thats basically the rendered width for the text
   // -80 because of the horizontal padding
   const maxTextWidth = Math.ceil(dimensions.width - 80) * 0.8;
-  const prop = Number((maxTextWidth / text.length).toFixed(2));
+  const prop = Number((maxTextWidth / text?.length).toFixed(2));
 
   let height;
 

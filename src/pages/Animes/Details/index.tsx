@@ -18,6 +18,7 @@ import Storage from '../../../services/storage';
 
 const Details: React.FC = () => {
   const [loading, setLoading] = useState(true);
+  const [animeHasNoDataAvailable, setAnimeHasNoDataAvailable] = useState(false);
   const [animeDetails, setAnimeDetails] = useState<AnimeDetails>(
     {} as AnimeDetails,
   );
@@ -38,13 +39,22 @@ const Details: React.FC = () => {
         const animeDetailsResponse = await getAnimeDetails(params.animeId);
         const animeEpisodesResponse = await getAnimeVideoInfo(params.animeId);
 
-        if (!animeDetailsResponse || !animeEpisodesResponse)
-          throw new Error(
-            'Não foi possível fazer a busca de episódios para esse anime, tente novamente mais tarde',
-          );
+        const validResponse = animeEpisodesResponse?.some(
+          ep => ep.location && ep.video_id,
+        );
 
-        setAnimeDetails(animeDetailsResponse);
-        setEpisodes(animeEpisodesResponse);
+        if (animeDetailsResponse || (animeEpisodesResponse && validResponse)) {
+          if (animeDetailsResponse) {
+            setAnimeDetails(animeDetailsResponse);
+          }
+
+          if (animeEpisodesResponse && validResponse) {
+            setEpisodes(animeEpisodesResponse);
+          } else {
+            setAnimeHasNoDataAvailable(true);
+          }
+        }
+
         setLoading(false);
       } catch (err) {
         // TODO: handle animes not found
@@ -175,14 +185,39 @@ const Details: React.FC = () => {
             {animeDetails.category_description}
           </Text>
         </View>
-        <LargeList
-          style={{ paddingTop: 15 }}
-          data={[{ items: episodes }]}
-          heightForIndexPath={getItemHeight}
-          renderIndexPath={renderItem}
-          renderFooter={() => <View style={{ height: 20 }} />}
-          onMoveShouldSetResponder={() => true}
-        />
+        {animeHasNoDataAvailable ? (
+          <View
+            style={{
+              maxHeight: 130,
+              marginBottom: 35,
+              paddingHorizontal: 70,
+              flexDirection: 'row',
+            }}>
+            <Text
+              style={{
+                flex: 1,
+                fontSize: 14,
+                textAlign: 'center',
+                color: `${theme.textPrimary}65`,
+                lineHeight: 18,
+                letterSpacing: 1.5,
+              }}
+              font="default"
+              numberOfLines={7}>
+              Esse anime ainda não possui episódios disponíveis ou não foi
+              possível recuperar os dados.
+            </Text>
+          </View>
+        ) : (
+          <LargeList
+            style={{ paddingTop: 15 }}
+            data={[{ items: episodes }]}
+            heightForIndexPath={getItemHeight}
+            renderIndexPath={renderItem}
+            renderFooter={() => <View style={{ height: 20 }} />}
+            onMoveShouldSetResponder={() => true}
+          />
+        )}
       </View>
     </>
   );
