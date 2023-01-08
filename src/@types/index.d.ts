@@ -51,6 +51,7 @@ interface HistoryObject {
   anime_id: string;
   anime_title: string;
   anime_cover: string;
+  watched_at: string;
 }
 
 type ThemeName = 'dark' | 'light';
