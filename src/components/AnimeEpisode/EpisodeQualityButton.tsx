@@ -58,6 +58,7 @@ const EpisodeQualityButton: React.FC<EpisodeQualityButtonProps> = ({
       anime_title: params.title.replace(/\sepis(o|ó)dio\s(.*)$/i, ''),
       video_id: episodeId,
       video_title: episodeTitle,
+      watched_at: new Date().toISOString(),
     });
     hideMenu();
   }, []);
