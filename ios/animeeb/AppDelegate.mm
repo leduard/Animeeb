@@ -31,6 +31,12 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  for (NSString *familyName in [UIFont familyNames]){
+  NSLog(@"Family name: %@", familyName);
+    for (NSString *fontName in [UIFont fontNamesForFamilyName:familyName]) {
+      NSLog(@"--Font name: %@", fontName);
+    }
+  }
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
@@ -44,7 +50,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 #endif
 
   NSDictionary *initProps = [self prepareInitialProps];
-  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"Animeeb", initProps);
+  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"animeeb", initProps);
 
   if (@available(iOS 13.0, *)) {
     rootView.backgroundColor = [UIColor systemBackgroundColor];

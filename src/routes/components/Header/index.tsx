@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Pressable, Alert } from 'react-native';
+import { StyleSheet, View, Pressable, Alert, Platform } from 'react-native';
 import { useMMKVStorage } from 'react-native-mmkv-storage';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useTheme } from 'styled-components/native';
@@ -139,6 +139,7 @@ const Header: React.FC<HeaderProps> = ({
         height: 120,
         padding: 35,
         backgroundColor: theme.primary,
+        marginTop: Platform.OS === 'ios' ? 60 : 0,
       }}>
       <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
         {renderIcons()}

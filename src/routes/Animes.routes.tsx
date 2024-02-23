@@ -7,6 +7,7 @@ import {
 } from '@react-navigation/native';
 import { useTheme } from 'styled-components/native';
 
+import { Platform } from 'react-native';
 import { ANIME_ROUTES_NAMES, ANIME_TAB_ROUTE_NAMES } from '../utils/routes';
 
 import Header, { HeaderProps } from './components/Header';
@@ -75,6 +76,7 @@ const AnimesRoutes: React.FC<AnimesRoutesProps> = ({ changeTheme }) => {
               tabBarStyle: {
                 backgroundColor: theme.primary,
                 padding: 5,
+                paddingBottom: Platform.OS === 'ios' ? 20 : undefined,
                 elevation: 0,
               },
               tabBarContentContainerStyle: { backgroundColor: theme.primary },
