@@ -215,7 +215,6 @@ const Details: React.FC = () => {
             heightForIndexPath={getItemHeight}
             renderIndexPath={renderItem}
             renderFooter={() => <View style={{ height: 20 }} />}
-            onMoveShouldSetResponder={() => true}
           />
         )}
       </View>
