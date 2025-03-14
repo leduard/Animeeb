@@ -2,7 +2,6 @@ import axios from 'axios';
 import { DEFAULT_API_LINK, DEFAULT_API_HEADER, VIDEOS_API_LINK } from '@env'; // eslint-disable-line
 
 export const defaultApiLink = DEFAULT_API_LINK;
-export const videosApiLink = VIDEOS_API_LINK;
 
 export function getRandomUserAgent(): string {
   const userAgents = [
@@ -26,7 +25,7 @@ const defaultApi = axios.create({
 });
 
 const videosApi = axios.create({
-  baseURL: videosApiLink,
+  baseURL: defaultApiLink,
   headers: {
     'user-agent': getRandomUserAgent(),
   },
@@ -96,12 +95,26 @@ export const getAnimeDetails = async (
   }
 };
 
-export const getAnimeVideoInfo = async (
+export const getAnimeEpisodes = async (
   anime_id: string,
+): Promise<AnimeEpisode[] | undefined> => {
+  try {
+    const { data }: { data: AnimeEpisode[] } = await defaultApi.get('', {
+      params: { cat_id: anime_id },
+    });
+
+    return data;
+  } catch (error) {
+    return undefined;
+  }
+};
+
+export const getAnimeVideoInfo = async (
+  episode_id: string,
 ): Promise<AnimeVideoInfos[] | undefined> => {
   try {
     const { data }: { data: AnimeVideoInfos[] } = await videosApi.get('', {
-      params: { action: 'category_videos', category_id: anime_id },
+      params: { episodios: episode_id },
     });
 
     return data;
