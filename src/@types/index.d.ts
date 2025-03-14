@@ -36,13 +36,23 @@ interface AnimeDetails {
   off: string;
 }
 
-interface AnimeVideoInfos {
-  response: string;
+interface AnimeEpisode {
   video_id: string;
+  category_id: string;
   title: string;
-  location: string;
-  sdlocation: string;
   isOpen?: boolean;
+  location?: string;
+  sdlocation?: string;
+}
+
+interface AnimeVideoInfos {
+  mS9wR2qY7pK7vX5n: string; // sd
+  fV3gK5vU7uG6hU5e: string; // hd
+  oU0dI2lL2tK2dR9f: string; // full hd
+  video_id: string;
+  category_id: string;
+  title: string;
+  sinop: string;
 }
 
 interface HistoryObject {

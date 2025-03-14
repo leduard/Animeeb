@@ -63,39 +63,44 @@ const EpisodeQualityButton: React.FC<EpisodeQualityButtonProps> = ({
     hideMenu();
   }, []);
 
-  const MenuButton: React.FC = React.memo(() => (
-    <TouchableOpacity
-      activeOpacity={episodeUrl ? 0.7 : 1}
-      onPress={e => {
-        e.stopPropagation();
-        if (episodeUrl) showMenu();
-      }}
-      onLongPress={() => {
-        if (episodeUrl) {
-          Clipboard.setString(episodeUrl);
-          ToastAndroid.show('Link copiado com sucesso!', ToastAndroid.LONG);
-        }
-      }}
-      style={{
-        width: 65,
-        height: 30,
-        borderRadius: 10,
-        backgroundColor: episodeUrl ? theme.secondary : `${theme.secondary}60`,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <Text
-        font="semiBold"
+  const MenuButton: React.FC = React.memo(
+    () => (
+      <TouchableOpacity
+        activeOpacity={episodeUrl ? 0.7 : 1}
+        onPress={e => {
+          e.stopPropagation();
+          if (episodeUrl) showMenu();
+        }}
+        onLongPress={() => {
+          if (episodeUrl) {
+            Clipboard.setString(episodeUrl);
+            ToastAndroid.show('Link copiado com sucesso!', ToastAndroid.LONG);
+          }
+        }}
         style={{
-          color: theme.primary,
-          fontSize: 12,
-          letterSpacing: 0.5,
-          marginTop: 3,
+          width: 65,
+          height: 30,
+          borderRadius: 10,
+          backgroundColor: episodeUrl
+            ? theme.secondary
+            : `${theme.secondary}60`,
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
-        {qualityTitle}
-      </Text>
-    </TouchableOpacity>
-  ));
+        <Text
+          font="semiBold"
+          style={{
+            color: theme.primary,
+            fontSize: 12,
+            letterSpacing: 0.5,
+            marginTop: 3,
+          }}>
+          {qualityTitle}
+        </Text>
+      </TouchableOpacity>
+    ),
+    () => false,
+  );
 
   return (
     <Menu
@@ -144,4 +149,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(EpisodeQualityButton, () => true);
+export default React.memo(
+  EpisodeQualityButton,
+  (oldProps, newProps) => oldProps.episodeUrl === newProps.episodeUrl,
+);

@@ -12,8 +12,13 @@ import AnimeEpisodeSkeleton from '../../../components/Skeletons/AnimeEpisode';
 
 import { AnimeDetailsRouteParams } from '../../../utils/routes';
 import { getHeightBasedOnText } from '../../../utils';
+import { WebCrypto, config, reverse } from '../../../utils/crypto';
 
-import { getAnimeDetails, getAnimeVideoInfo } from '../../../services/api';
+import {
+  getAnimeDetails,
+  getAnimeEpisodes,
+  getAnimeVideoInfo,
+} from '../../../services/api';
 import Storage from '../../../services/storage';
 
 const Details: React.FC = () => {
@@ -22,7 +27,7 @@ const Details: React.FC = () => {
   const [animeDetails, setAnimeDetails] = useState<AnimeDetails>(
     {} as AnimeDetails,
   );
-  const [episodes, setEpisodes] = useState<AnimeVideoInfos[]>([]);
+  const [episodes, setEpisodes] = useState<AnimeEpisode[]>([]);
   const [history] = useMMKVStorage<HistoryObject[]>(
     Storage.HISTORY_KEY_ID,
     Storage.getStorage(),
@@ -37,11 +42,9 @@ const Details: React.FC = () => {
     async function run() {
       try {
         const animeDetailsResponse = await getAnimeDetails(params.animeId);
-        const animeEpisodesResponse = await getAnimeVideoInfo(params.animeId);
+        const animeEpisodesResponse = await getAnimeEpisodes(params.animeId);
 
-        const validResponse = animeEpisodesResponse?.some(
-          ep => ep.location && ep.video_id,
-        );
+        const validResponse = animeEpisodesResponse?.some(ep => ep.video_id);
 
         if (animeDetailsResponse || (animeEpisodesResponse && validResponse)) {
           if (animeDetailsResponse) {
@@ -67,17 +70,66 @@ const Details: React.FC = () => {
   }, []); // eslint-disable-line
 
   const handleOpenEpisode = useCallback(toOpenIndex => {
+    let tempEp: AnimeEpisode;
     setEpisodes(prev => {
-      const newEpisodeToUpdate = {
+      const newState = [...prev];
+      newState[toOpenIndex] = {
         ...prev[toOpenIndex],
         isOpen: !prev[toOpenIndex]?.isOpen,
       };
 
-      const newState = [...prev];
-      newState[toOpenIndex] = newEpisodeToUpdate;
-
+      tempEp = newState[toOpenIndex];
       return newState;
     });
+
+    async function getUrlsSetOpen() {
+      if (tempEp.location || tempEp.sdlocation) {
+        return;
+      }
+
+      const videoInfo = await getAnimeVideoInfo(tempEp.video_id);
+
+      let location = videoInfo?.[0].mS9wR2qY7pK7vX5n;
+      let sdlocation = videoInfo?.[0].fV3gK5vU7uG6hU5e;
+
+      // i dont know what the fuck is going on here
+      // but it works, so i dont care
+      if (location) {
+        const jwt = location.slice(36, -64);
+        let iv = jwt.substring(jwt.length - 64);
+
+        iv = (WebCrypto as any).enc.Utf8.parse(reverse(iv));
+
+        const words = (WebCrypto as any).JWT.decrypt(jwt, config, { iv });
+        const urlEnd = (WebCrypto as any).enc.Utf8.stringify(words);
+
+        location = `https://get.atv2.net/m.php${urlEnd.split('m.php')[1]}`;
+      }
+
+      if (sdlocation) {
+        const jwt = sdlocation.slice(36, -64);
+        let iv = jwt.substring(jwt.length - 64);
+
+        iv = (WebCrypto as any).enc.Utf8.parse(reverse(iv));
+
+        const words = (WebCrypto as any).JWT.decrypt(jwt, config, { iv });
+        const urlEnd = (WebCrypto as any).enc.Utf8.stringify(words);
+
+        sdlocation = `https://get.atv2.net/m.php${urlEnd.split('m.php')[1]}`;
+      }
+
+      setEpisodes(prevEpisodes => {
+        const updatedState = [...prevEpisodes];
+        updatedState[toOpenIndex] = {
+          ...prevEpisodes[toOpenIndex],
+          location,
+          sdlocation,
+        };
+        return updatedState;
+      });
+    }
+
+    getUrlsSetOpen();
   }, []);
 
   const getItemHeight = useCallback(
@@ -100,7 +152,10 @@ const Details: React.FC = () => {
               key={row}
               episodeId={episodes[row].video_id}
               title={episodes[row].title}
-              episodeUrls={[episodes[row].location, episodes[row].sdlocation]}
+              episodeUrls={[
+                episodes[row].location || '',
+                episodes[row].sdlocation || '',
+              ]}
               isOpen={episodes[row].isOpen}
               watched={history?.some(
                 obj => obj.video_id === episodes[row].video_id,
@@ -159,7 +214,7 @@ const Details: React.FC = () => {
           }}>
           <Image
             source={{
-              uri: `https://cdn.appanimeplus.tk/img/${animeDetails.category_image}`,
+              uri: `https://cdn.atv2.net/img/${animeDetails.category_image}`,
               headers: {
                 'user-agent':
                   'Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36',
