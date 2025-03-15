@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components/native';
-import SplashScreen from 'react-native-splash-screen';
+import BootSplash from 'react-native-bootsplash';
 
 import Routes from './routes';
 
@@ -26,11 +27,11 @@ const App: React.FC = () => {
           savedThemeName === 'dark' ? theme.colors.dark : theme.colors.light,
         );
       }
-
-      SplashScreen.hide();
     }
 
-    start();
+    start().finally(async () => {
+      await BootSplash.hide({ fade: true });
+    });
   }, []);
 
   const changeTheme = useCallback(async () => {
@@ -45,21 +46,23 @@ const App: React.FC = () => {
   }, [currentTheme]);
 
   return (
-    <ThemeProvider theme={currentTheme}>
-      <StatusBar
-        backgroundColor={currentTheme.primary}
-        barStyle={
-          currentTheme.name === 'dark' ? 'light-content' : 'dark-content'
-        }
-      />
-      <NavigationContainer
-        theme={{
-          colors: { ...DarkTheme.colors, background: currentTheme.primary },
-          dark: DarkTheme.dark,
-        }}>
-        <Routes changeTheme={changeTheme} />
-      </NavigationContainer>
-    </ThemeProvider>
+    <GestureHandlerRootView>
+      <ThemeProvider theme={currentTheme}>
+        <StatusBar
+          backgroundColor={currentTheme.primary}
+          barStyle={
+            currentTheme.name === 'dark' ? 'light-content' : 'dark-content'
+          }
+        />
+        <NavigationContainer
+          theme={{
+            colors: { ...DarkTheme.colors, background: currentTheme.primary },
+            dark: DarkTheme.dark,
+          }}>
+          <Routes changeTheme={changeTheme} />
+        </NavigationContainer>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 };
 

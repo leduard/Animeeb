@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
   useRoute,
   getFocusedRouteNameFromRoute,
+  useNavigation,
 } from '@react-navigation/native';
 import { useTheme } from 'styled-components/native';
 
@@ -32,45 +33,37 @@ interface AnimesRoutesProps {
 }
 
 const AnimesRoutes: React.FC<AnimesRoutesProps> = ({ changeTheme }) => {
-  const route = useRoute();
   const theme = useTheme();
-
-  const currentRouteName =
-    getFocusedRouteNameFromRoute(route) || ANIME_ROUTES_NAMES.home;
-
-  const headerProps: HeaderProps = {
-    leftSide: currentRouteName === 'Home' ? 'icon' : 'close',
-    rightSide:
-      currentRouteName === 'Settings' || currentRouteName === 'History'
-        ? 'none'
-        : currentRouteName === 'Home'
-        ? 'configure'
-        : 'heart',
-  };
 
   return (
     <StackNavigator.Navigator
       screenOptions={{
-        header: () => (
-          <Header
-            leftSide={headerProps.leftSide}
-            rightSide={headerProps.rightSide}
-          />
-        ),
+        header: ({ route }) => {
+          const headerProps: HeaderProps = {
+            leftSide: route.name === 'Home' ? 'icon' : 'close',
+            rightSide:
+              route.name === 'Settings' || route.name === 'History'
+                ? 'none'
+                : route.name === 'Home'
+                ? 'configure'
+                : 'heart',
+          };
+
+          return (
+            <Header
+              leftSide={headerProps.leftSide}
+              rightSide={headerProps.rightSide}
+            />
+          );
+        },
         cardStyle: {
           backgroundColor: 'transparent',
-        },
-      }}
-      defaultScreenOptions={{
-        cardStyle: {
-          backgroundColor: theme.warn,
         },
       }}>
       <StackNavigator.Screen name={ANIME_ROUTES_NAMES.home}>
         {() => (
           <TabNavigator.Navigator
             tabBarPosition="bottom"
-            sceneContainerStyle={{ backgroundColor: theme.primary }}
             initialRouteName={ANIME_TAB_ROUTE_NAMES.home}
             screenOptions={{
               tabBarStyle: {

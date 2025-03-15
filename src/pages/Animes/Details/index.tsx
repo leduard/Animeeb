@@ -1,25 +1,24 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
-import { useMMKVStorage } from 'react-native-mmkv-storage';
 import { useTheme } from 'styled-components/native';
-import { LargeList } from 'react-native-largelist';
 
+import { LegendList } from '@legendapp/list';
 import AnimeEpisode from '../../../components/AnimeEpisode';
 import Text from '../../../components/Text';
 import DetailsSkeleton from '../../../components/Skeletons/Details';
 import AnimeEpisodeSkeleton from '../../../components/Skeletons/AnimeEpisode';
 
 import { AnimeDetailsRouteParams } from '../../../utils/routes';
-import { getHeightBasedOnText } from '../../../utils';
-import { WebCrypto, config, reverse } from '../../../utils/crypto';
+import { WebCrypto, config, reverse } from '../../../utils/crypto.js';
 
 import {
   getAnimeDetails,
   getAnimeEpisodes,
   getAnimeVideoInfo,
 } from '../../../services/api';
-import Storage from '../../../services/storage';
+import { getHeightBasedOnText } from '../../../utils';
 
 const Details: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -28,10 +27,6 @@ const Details: React.FC = () => {
     {} as AnimeDetails,
   );
   const [episodes, setEpisodes] = useState<AnimeEpisode[]>([]);
-  const [history] = useMMKVStorage<HistoryObject[]>(
-    Storage.HISTORY_KEY_ID,
-    Storage.getStorage(),
-  );
 
   const theme = useTheme();
   const { params } = useRoute<RouteProp<AnimeDetailsRouteParams, 'Anime'>>();
@@ -61,7 +56,7 @@ const Details: React.FC = () => {
         setLoading(false);
       } catch (err) {
         // TODO: handle animes not found
-        console.log(err.message);
+        console.log((err as Error).message);
         setLoading(false);
       }
     }
@@ -69,7 +64,7 @@ const Details: React.FC = () => {
     run();
   }, []); // eslint-disable-line
 
-  const handleOpenEpisode = useCallback(toOpenIndex => {
+  const handleOpenEpisode = useCallback((toOpenIndex: number) => {
     let tempEp: AnimeEpisode;
     setEpisodes(prev => {
       const newState = [...prev];
@@ -133,33 +128,26 @@ const Details: React.FC = () => {
   }, []);
 
   const getItemHeight = useCallback(
-    ({ row }) =>
-      episodes[row].isOpen
-        ? getHeightBasedOnText(episodes[row].title, screenDim) + 50
-        : getHeightBasedOnText(episodes[row].title, screenDim),
+    () => getHeightBasedOnText(episodes[0].title, screenDim),
     [episodes, screenDim],
   );
 
   const renderItem = useCallback(
-    ({ row }) => {
+    (itemData: { index: number }) => {
       return (
         <>
           <TouchableOpacity
-            onPress={() => handleOpenEpisode(row)}
+            onPress={() => handleOpenEpisode(itemData.index)}
             activeOpacity={0.75}
             style={{ flexDirection: 'row', marginHorizontal: 40 }}>
             <AnimeEpisode
-              key={row}
-              episodeId={episodes[row].video_id}
-              title={episodes[row].title}
+              episodeId={episodes[itemData.index].video_id}
+              title={episodes[itemData.index].title}
               episodeUrls={[
-                episodes[row].location || '',
-                episodes[row].sdlocation || '',
+                episodes[itemData.index].location || '',
+                episodes[itemData.index].sdlocation || '',
               ]}
-              isOpen={episodes[row].isOpen}
-              watched={history?.some(
-                obj => obj.video_id === episodes[row].video_id,
-              )}
+              isOpen={episodes[itemData.index].isOpen}
             />
           </TouchableOpacity>
           <View
@@ -174,7 +162,7 @@ const Details: React.FC = () => {
         </>
       );
     },
-    [episodes, history],
+    [episodes],
   );
 
   return loading ? (
@@ -264,13 +252,16 @@ const Details: React.FC = () => {
             </Text>
           </View>
         ) : (
-          <LargeList
-            style={{ paddingTop: 15 }}
-            data={[{ items: episodes }]}
-            heightForIndexPath={getItemHeight}
-            renderIndexPath={renderItem}
-            renderFooter={() => <View style={{ height: 20 }} />}
-          />
+          <View style={{ paddingTop: 15, flex: 1 }}>
+            <LegendList
+              data={episodes}
+              estimatedItemSize={getItemHeight()}
+              renderItem={renderItem}
+              keyExtractor={item => item.video_id}
+              recycleItems
+              maintainScrollAtEnd
+            />
+          </View>
         )}
       </View>
     </>

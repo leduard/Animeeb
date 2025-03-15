@@ -24,6 +24,7 @@ interface EpisodeQualityButtonProps {
   episodeTitle: string;
   episodeId: string;
   episodeUrl?: string;
+  onHistoryUpdate?: (newHistory: HistoryObject[]) => void;
 }
 
 const EpisodeQualityButton: React.FC<EpisodeQualityButtonProps> = ({
@@ -52,14 +53,16 @@ const EpisodeQualityButton: React.FC<EpisodeQualityButtonProps> = ({
       if (supported) await Linking.openURL(link);
     }
 
-    Storage.addToHistory({
+    const newHistoryItem: HistoryObject = {
       anime_cover: params.cover,
       anime_id: params.animeId,
       anime_title: params.title.replace(/\sepis(o|ó)dio\s(.*)$/i, ''),
       video_id: episodeId,
       video_title: episodeTitle,
       watched_at: new Date().toISOString(),
-    });
+    };
+
+    await Storage.addToHistory(newHistoryItem);
     hideMenu();
   }, []);
 
