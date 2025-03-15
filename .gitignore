@@ -18,6 +18,10 @@ xcuserdata
 *.moved-aside
 DerivedData
 *.hmap
+.cxx/
+*.keystore
+!debug.keystore
+.kotlin/
 *.ipa
 *.xcuserstate
 ios/.xcode.env.local

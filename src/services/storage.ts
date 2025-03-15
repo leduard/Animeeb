@@ -1,7 +1,7 @@
-import MMKVStorage from 'react-native-mmkv-storage';
+import { MMKVInstance, MMKVLoader } from 'react-native-mmkv-storage';
 
 export default class Storage {
-  private static MMKV: MMKVStorage.API;
+  private static MMKV: MMKVInstance;
 
   static INSTANCE_ID = 'ANIME_APP_STORAGE';
 
@@ -11,9 +11,9 @@ export default class Storage {
 
   static THEME_KEY_ID = `${this.INSTANCE_ID}:THEME`;
 
-  static getStorage(): MMKVStorage.API {
+  static getStorage(): MMKVInstance {
     if (!this.MMKV)
-      this.MMKV = new MMKVStorage.Loader()
+      this.MMKV = new MMKVLoader()
         .withInstanceID(this.INSTANCE_ID)
         .initialize();
 

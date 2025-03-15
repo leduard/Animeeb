@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
+import { useMMKVStorage } from 'react-native-mmkv-storage';
 import Text from '../Text';
 import EpisodeQualityButton from './EpisodeQualityButton';
 
 import ArrowIcon from '../../assets/icons/arrow.svg';
+import Storage from '../../services/storage';
 
 interface AnimeEpisodeProps {
   title: string;
   episodeId: string;
   episodeUrls: string[];
   isOpen?: boolean;
-  watched?: boolean;
 }
 
 const AnimeEpisode: React.FC<AnimeEpisodeProps> = ({
@@ -20,9 +21,16 @@ const AnimeEpisode: React.FC<AnimeEpisodeProps> = ({
   episodeId,
   episodeUrls,
   isOpen,
-  watched,
 }) => {
   const theme = useTheme();
+
+  // not good but im tired of trying
+  const [history] = useMMKVStorage<HistoryObject[]>(
+    Storage.HISTORY_KEY_ID,
+    Storage.getStorage(),
+  );
+
+  const watched = history?.some(obj => obj.video_id === episodeId);
 
   return (
     <>
@@ -102,4 +110,10 @@ const AnimeEpisode: React.FC<AnimeEpisodeProps> = ({
   );
 };
 
-export default React.memo(AnimeEpisode);
+export default React.memo(
+  AnimeEpisode,
+  (oldProps, newProps) =>
+    oldProps.episodeId === newProps.episodeId &&
+    oldProps.isOpen === newProps.isOpen &&
+    oldProps.episodeUrls[0] === newProps.episodeUrls[0],
+);
