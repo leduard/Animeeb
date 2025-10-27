@@ -10,6 +10,6 @@ module.exports = {
         safe: true,
       },
     ],
-    'react-native-reanimated/plugin',
+    'react-native-worklets/plugin',
   ],
 };
